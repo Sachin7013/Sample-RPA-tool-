@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+from config import EMAIL_ADDRESS, MFA_TIMEOUT, WEBDRIVER_TIMEOUT
 
 
 # Start Chrome
@@ -17,16 +18,16 @@ os.makedirs(evidence_dir, exist_ok=True)
 driver.get("https://login.microsoftonline.com/")
 
 
-WebDriverWait(driver, 10).until(
+WebDriverWait(driver, WEBDRIVER_TIMEOUT).until(
     EC.presence_of_element_located((By.ID, "i0116"))
-).send_keys("sachinbfrnd@gmail.com")
+).send_keys(EMAIL_ADDRESS)
 
 driver.find_element(By.ID, "idSIButton9").click()
 time.sleep(5)
 
 
 # Wait until page changes
-WebDriverWait(driver, 10).until(lambda d: d.current_url != "https://login.microsoftonline.com/")
+WebDriverWait(driver, WEBDRIVER_TIMEOUT).until(lambda d: d.current_url != "https://login.microsoftonline.com/")
 
 # Take screenshot for evidence
 screenshot_path = os.path.join(evidence_dir, "login_page.png")
